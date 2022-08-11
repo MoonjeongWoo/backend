@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/MoonjeongWoo/backend/issues"
   },
-  "homepage": "https://github.com/MoonjeongWoo/backend#readme"
+  "homepage": "https://github.com/MoonjeongWoo/backend#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }
