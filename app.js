@@ -23,9 +23,10 @@ const upload = multer({
 app.set("view engine", "ejs");
 app.use("/static", express.static("static"));
 app.use("/uploads", express.static("uploads"));
+//이미지 업로드 할때 미들웨어 제어장치
 
 const port = 8000;
-
+//포트 번호 지정하기
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
