@@ -3,8 +3,20 @@ const multer = require("multer");
 const app = express();
 // 파일 제출할때 파일이 저장되는 공간
 // dest : uploads
+const path = require("path");
 const upload = multer({
-  dest: "uploads/",
+  storage: multer.diskStorage({
+    destination(req, file, done) {
+      done(null, "uploads/");
+    },
+    filename(req, file, done) {
+      const ext = path.extname(file.originalname);
+      done(null, path.basename(file.originalname, ext) + Date.now() + ext);
+      //얘들은 파일 이름 업로드한 이름 그대로 하는것
+    },
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  //얘는 파일 용량 제한
 });
 
 app.set("view engine", "ejs");
