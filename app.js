@@ -10,8 +10,9 @@ const upload = multer({
       done(null, "uploads/");
     },
     filename(req, file, done) {
+      console.log(req.body.id);
       const ext = path.extname(file.originalname);
-      done(null, path.basename(file.originalname, ext) + Date.now() + ext);
+      done(null, path.basename(req.body.id) + Date.now() + ext);
       //얘들은 파일 이름 업로드한 이름 그대로 하는것
     },
   }),
@@ -21,6 +22,7 @@ const upload = multer({
 
 app.set("view engine", "ejs");
 app.use("/static", express.static("static"));
+app.use("/uploads", express.static("uploads"));
 
 const port = 8000;
 
@@ -35,9 +37,15 @@ app.get("/", (req, res) => {
 // upload.single은 form태그 name하고 같은 놈,
 //
 app.post("/upload", upload.single("userfile"), (req, res) => {
+  var data = {
+    name: req.body.name,
+    age: req.body.age,
+    user_ID: req.body.user_ID,
+  };
+  console.log(data);
   console.log(req.body);
   console.log(req.file);
-  res.send("업로드성공했어요!");
+  res.send(req.file.filename);
 });
 
 app.listen(port, () => {
