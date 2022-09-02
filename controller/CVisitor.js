@@ -2,6 +2,7 @@ const Visitor = require("../model/Visitor");
 
 exports.visitor = (req, res) => {
   Visitor.get_visitor(function (result) {
+    // 얘는 Visitor.js에 있는 함수를 가져오겠다
     console.log(result);
     res.render("Visitor", { data: result });
   });

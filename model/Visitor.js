@@ -14,6 +14,7 @@ const cnn = mysql.createConnection({
 
 exports.get_visitor = (cb) => {
   var sql = "SELECT * FROM visitor";
+  //   변수에 sql문 저장 하기
   cnn.query(sql, (err, rows) => {
     if (err) throw err;
     console.log("visitors :", rows);
