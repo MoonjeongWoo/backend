@@ -7,8 +7,6 @@ exports.login = (req, res) => {
   } else {
     res.send("실패");
   }
-  console.log(info.id);
-  console.log(info.pw);
 };
 exports.main = (req, res) => {
   res.render("login");
