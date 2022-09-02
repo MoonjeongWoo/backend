@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <script src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </head>
+    <body>
+        <form>
+            <label>아이디 : </label>
+            <input type="text" name="name" id="id" required>
+            <br>
+            <label>비번 : </label>
+            <input type="password" name="password" required>
+            <input type="reset">
+            <button type="button" onclick="dynamicForm();">로그인</button>
+        </form>
+
+        <script>
+        function dynamicForm(){
+            var form = document.querySelector("form");
+            var data = {
+                name : form.name.value,
+                passwd: form.password.value,
+            }
+            axios({
+                url: "/login",
+                method: "post",
+                data: data,
+            }).then((res) => {
+                console.log(res.data);
+            })
+        };
+        </script>
+    </body>
+</html>
