@@ -11,6 +11,7 @@ router.post("/login", controller.login);
 
 var controllerV = require("../controller/CVisitor");
 router.get("/visitor", controllerV.visitor);
+router.post("/visitor/post", controllerV.post_visitor);
 //app.get과 똑같은것, localhost:8000 하면 여기로 들어온다
 module.exports = router;
 //모듈로 사용하겠다는 선언

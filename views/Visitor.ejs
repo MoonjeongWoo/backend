@@ -26,9 +26,42 @@
             <th>수정</th>
             <th>삭제</th>
         </tr>
+        <% for( let i = 0; i  < data.length; i++){ %>
+            <tr>
+                <td><%=data[i].id%></td>
+                <td><%=data[i].name%></td>
+                <td><%=data[i].comment%></td>
+                <td><button type="button">수정</button></td>
+                <td><button type="button">삭제</button></td>
+            </tr>
+
+            <%}%>
     </table>
     <script>
-        
+        function register(){
+            var form = document.getElementById("form_register");
+            var data = {
+                name: form.name.value,
+                comment: form.comment.value
+            }
+
+            axios({
+                url: "/visitor/post",
+                method: "post",
+                data: data
+            }).then((response)=>{
+                console.log(data);
+                $("table").append(
+                    `<tr>
+                        <td>${response.data.id}</td>
+                        <td>${response.data.name}</td>
+                        <td>${response.data.comment}</td>
+                        <td><button type="button">수정</button></td>
+                        <td><button type="button">삭제</button></td>
+                    </tr>`
+                );
+            })
+        }
     </script>
 </body>
 </html>
