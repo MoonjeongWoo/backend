@@ -1,3 +1,8 @@
+const Visitor = require("../model/Visitor");
+
 exports.visitor = (req, res) => {
-  res.render("Visitor");
+  Visitor.get_visitor(function (result) {
+    console.log(result);
+    res.render("Visitor", { data: result });
+  });
 };
