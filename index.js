@@ -10,6 +10,7 @@ app.use(express.json());
 const router = require("./routes");
 app.use("/", router);
 app.use("/login", router);
+app.use("/Visitor", router);
 
 // require -> 모듈 불러오기
 //8000번으로 들어왔을때 라우트 연결 하겠다.
