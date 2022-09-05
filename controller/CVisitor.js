@@ -17,3 +17,8 @@ exports.post_visitor = (req, res) => {
     res.send(data);
   });
 };
+exports.delete_visitor = (req, res) => {
+  Visitor.delete_visitor(req.body.id, function () {
+    res.send("삭제완료");
+  });
+};

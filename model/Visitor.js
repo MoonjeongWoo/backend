@@ -30,3 +30,20 @@ exports.post_visitor = (data, cb) => {
     cb(result.insertId);
   });
 };
+exports.delete_visitor = (id, cb) => {
+  var sql = `DELETE FROM visitor WHERE id = ${id}`;
+  cnn.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log("visitors :", result);
+
+    cb();
+  });
+};
+exports.update_visitor = (data, cb) => {
+  var sql = `UPDATE visitor SET(name, comment) WHERE values('${data.name}', '${data.comment}')`;
+  cnn.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log("visitors :", result);
+    cb(result.updateId);
+  });
+};
