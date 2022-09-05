@@ -18,6 +18,5 @@ router.post("/visitor/post", controllerV.post_visitor);
 // 얘는 post요첨 insert 문 post방식으로
 router.post("/visitor/delete", controllerV.delete_visitor);
 // 얘는 post로 delete 문
-// router.post("/visitor/update", controllerV.update_visitor);
 module.exports = router;
 //모듈로 사용하겠다는 선언

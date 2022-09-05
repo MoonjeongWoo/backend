@@ -22,8 +22,3 @@ exports.delete_visitor = (req, res) => {
     res.send("삭제완료");
   });
 };
-// exports.update_visitor = (req, res) => {
-//   Visitor.update_visitor(req.body.data, function () {
-//     res.send(data);
-//   });
-// };

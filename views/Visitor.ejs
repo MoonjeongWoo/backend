@@ -8,6 +8,11 @@
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>Document</title>
+    <style>
+        .d-none{
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <form id="form_register">
@@ -15,6 +20,12 @@
             <legend>방명록 등록</legend>
             이름 : <input type="text" name="name" placeholder="사용자 이름"><br>
             방명록 : <input type="text" name="comment" placeholder="방명록"><br>
+           
+            <div class="d-none" id="update_btn">
+            <button type="button" onclick="">수정</button>
+            <button type="button" onclick="">취소</button>
+           </div>
+           
             <button type="button" onclick="register();">등록</button>
         </fieldset>
     </form>
@@ -31,7 +42,7 @@
                 <td><%=data[i].id%></td>
                 <td><%=data[i].name%></td>
                 <td><%=data[i].comment%></td>
-                <td><button type="button">수정</button></td>
+                <td><button type="button" >수정</button></td>
                 <td><button type="button" onclick="delete_visitor('<%=data[i].id%>', this)">삭제</button></td>
             </tr>
 
@@ -74,7 +85,7 @@
                 obj.parentElement.parentElement.remove();
             })
         }
-        
+       
     
     </script>
 </body>
