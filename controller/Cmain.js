@@ -1,16 +1,16 @@
-const Test = require("../model/Test");
+// const Test = require("../model/Test");
 
-exports.login = (req, res) => {
-  var info = Test.login();
-  if (req.body.name == info.id && req.body.passwd == info.pw) {
-    res.send("성공");
-  } else {
-    res.send("실패");
-  }
-};
-exports.main = (req, res) => {
-  res.render("login");
-};
+// exports.login = (req, res) => {
+//   var info = Test.login();
+//   if (req.body.name == info.id && req.body.passwd == info.pw) {
+//     res.send("성공");
+//   } else {
+//     res.send("실패");
+//   }
+// };
+// exports.main = (req, res) => {
+//   res.render("login");
+// };
 
 // exports.login = (req, res) => {
 //   var info = Test.login();
