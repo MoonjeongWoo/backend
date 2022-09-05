@@ -15,7 +15,9 @@ var controllerV = require("../controller/CVisitor");
 router.get("/visitor", controllerV.visitor);
 // 얘는 get 요청 변수에 컨트롤러에서 CVisitor를 써주겠다 -> 거기서 get요청을 하겠다. 그럼 컨트롤러로 간다잉
 router.post("/visitor/post", controllerV.post_visitor);
-// 얘는 post요첨
+// 얘는 post요첨 insert 문 post방식으로
 router.post("/visitor/delete", controllerV.delete_visitor);
+// 얘는 post로 delete 문
+// router.post("/visitor/update", controllerV.update_visitor);
 module.exports = router;
 //모듈로 사용하겠다는 선언

@@ -39,11 +39,11 @@ exports.delete_visitor = (id, cb) => {
     cb();
   });
 };
-exports.update_visitor = (data, cb) => {
-  var sql = `UPDATE visitor SET(name, comment) WHERE values('${data.name}', '${data.comment}')`;
-  cnn.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log("visitors :", result);
-    cb(result.updateId);
-  });
-};
+// exports.update_visitor = (data, cb) => {
+//   var sql = `UPDATE visitor SET(name, comment) WHERE values('${data.name}', '${data.comment}')`;
+//   cnn.query(sql, (err, result) => {
+//     if (err) throw err;
+//     console.log("visitors :", result);
+//     cb(result.updateId);
+//   });
+// };
