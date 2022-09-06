@@ -24,48 +24,104 @@
         function pay(){
             console.log(`${product}의 금액인 ${payment}원을 지불한다.`);
         }
+
+        //await 은 뒤 async 함수내에서만 사용 가능,
+        //
+       async function exec() {
+       
         var product;
         var payment;
         go_convenient();
-        pick()
-        .then(()=>{
-            pay();
-        })
-        .catch(()=>{
-            console.log("실패");
-        })
+        await pick();
+        pay();
+       }
 
 
-        function add(n1,n2, cb){
+        function add(n1,n2){
+            return new Promise(function(resolve,reject){
             setTimeout(function(){
                 var result = n1 + n2;
-                cb(result);
+                resolve(result)
             }, 1000)
+            })
         }
 
-        function mul(num, cb){
+        function mul(num){
+            return new Promise(function(resolve,reject){
             setTimeout(function(){
                 var result = num * 3;
-                cb(result);
+                resolve(result)
             }, 700)
+            })
         }
-
-        function sub(num ,cb){
+        function sub(num){
+            return new Promise(function(resolve,reject){
             setTimeout(function(){
                 var result = num-2;
-                cb(result)
+                resolve(result)
             },500);
+        })
         }
 
-        add(3,2, function(result){
-            console.log("1:",result);
-            mul(result, function(result2){
-                console.log("2:" ,result2);
-                sub(result2,function(result3){
-                    console.log("3:", result3);
-                })
-            })
+async function 기다려(){
+      await  add(3,2)
+        .then(function(result){
+            console.log("1:" , result);
+            return mul(result);
         })
+        .then(function(result){
+            console.log("2: " ,result);
+            return sub(result);
+        })
+        .then(function(result){
+            console.log("3 : ", result)
+        });
+    }
+//=========================================================
+
+        function call(name){
+            return new Promise (function(resolve,reject){
+             setTimeout( function(){
+                 console.log( name ); 
+                 resolve(name);
+            }, 1000 );
+         })
+        } 
+        function back(txt) { 
+            return new Promise(function(resolve,reject){
+            setTimeout( function() { 
+                console.log(txt );
+                resolve(txt) 
+             }, 1000 );
+            })
+         } 
+         function hell(message){
+            return new Promise(function(resolve,reject){
+             setTimeout( function() {
+                resolve("collback hell")     
+                return resolve;
+            }, 1000 ); 
+            })
+        } 
+       
+    async function bibi(){   
+       
+      
+        let user = await call('kim');
+        console.log(user + "반가웡");
+        
+        let push = await back("back");
+        console.log(push + "를 눌렀구낭~!");
+
+        let 콜백헬 = await hell();
+        console.log("여기는..." + 콜백헬);
+    }
+    bibi();
+        //========================================================
+
+
+
+
     </script>
 </body>
 </html>
