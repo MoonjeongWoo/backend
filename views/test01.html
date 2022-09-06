@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function go_convenient(){
+            console.log('편의점에 들어가서 어떤 음료를 살지 고민한다.');
+        }
+        function pick(){
+            return new Promise(function(resolve, reject){
+                setTimeout(function() {
+                    console.log('고민이 끝났다!');
+                    product = "콜라";
+                    payment = 1500;
+                    resolve();
+                }, 3000);
+            })
+        }
+        function pay(){
+            console.log(`${product}의 금액인 ${payment}원을 지불한다.`);
+        }
+        var product;
+        var payment;
+        go_convenient();
+        pick()
+        .then(()=>{
+            pay();
+        })
+        .catch(()=>{
+            console.log("실패");
+        })
+
+
+        function add(n1,n2, cb){
+            setTimeout(function(){
+                var result = n1 + n2;
+                cb(result);
+            }, 1000)
+        }
+
+        function mul(num, cb){
+            setTimeout(function(){
+                var result = num * 3;
+                cb(result);
+            }, 700)
+        }
+
+        function sub(num ,cb){
+            setTimeout(function(){
+                var result = num-2;
+                cb(result)
+            },500);
+        }
+
+        add(3,2, function(result){
+            console.log("1:",result);
+            mul(result, function(result2){
+                console.log("2:" ,result2);
+                sub(result2,function(result3){
+                    console.log("3:", result3);
+                })
+            })
+        })
+    </script>
+</body>
+</html>
