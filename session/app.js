@@ -3,8 +3,12 @@ const session = require("express-session");
 const app = express();
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
+// extended 를 false로 주게 되면 내장된 쿼리스트링 모듈을 사용
+//true로 사용 하면, qs로 모듈을 사용
 app.use(express.json());
-
+//json 형태의 데이터를 해석해준다.
+//json과 urlencoded는 모두 body- parser 미들웨어 이용한것
+//json이란, 서버에서 클라이언트로 데이터를 보낼때 사용 하는 양식
 app.use(
   session({
     secret: "secret key",
