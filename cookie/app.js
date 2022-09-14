@@ -40,7 +40,7 @@ const cookieConfig = {
   httpOnly: true,
   maxAge: 24 * 60 * 60 * 1000,
 };
-
+// maxAge
 app.get("/", (req, res) => {
   res.render("index", {
     popup: req.cookies.popup,

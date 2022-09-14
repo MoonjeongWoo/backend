@@ -32,10 +32,13 @@
         </div>
         <script>
             const myModal = new bootstrap.Modal('#exampleModal');
+            //모달 제어 하기
             if("<%=popup%>"=="") myModal.show();
-
+            //모달 보여주기 ejs 
             function modalClose(){
                 if(document.getElementById("cookie").checked) {
+                    //체크박스 체크 여부 -> 이걸 시발 몰랐다니 자숙해라
+                    //체크박스 여부 는 checked를 사용하자
                     axios({
                         url: "/setcookie",
                         method: "post"

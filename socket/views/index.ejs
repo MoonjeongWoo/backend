@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .content{
+            width: 400px;
+            background-color: aquamarine;
+            height: 500px;
+            position: relative;
+            display: flexbox;
+        }
+        .party{
+            width: 50%;
+            font-size: 5px;
+            height: 10%;
+            background-color: aliceblue;
+        }
+        #mesend{
+            position: relative;
+        }
+       
+
+    </style>
+    <title>Document</title>
+</head>
+<body>
+<div class="content">
+    <div id="party"></div>
+    <div id="mesend"></div>
+    <div id="yousend"></div>
+</div>
+<div>
+    <form>
+        <select name="select" id="select">
+            <option value="man1">홍길동</option>
+            <option value="man2">이박사</option>
+        </select>
+        <input type="text" name="text" id="content">
+        <button type="button" onclick="send();">전송하기</button>
+    </form>
+</div>
+    
+
+
+
+    <script>
+        var socket = io.connect(); // app.js에io와 연결
+
+        //socket.emit("이벤트 명", 전송할데이터 )
+        
+       // socket.emit("welcome", "안녕안녕 나는 지수야"); // 클라이언트에서 서버에게 보내기
+        
+      /*  socket.on("welcome to client" , function(data){ 서버에서 보낸거 클라이언트에서 받기
+            console.log(data);
+
+            console.log(data.name);
+            console.log(data.msg)
+        })*/
+         
+        socket.on("notice", function(id){
+          console.log(id);
+          var party = document.getElementById("party");
+          party.innerHTML += `${id}`;
+
+        });
+        
+        
+        function send(){
+            var text = document.getElementById("content")
+            var mysend = document.getElementById("mesend");
+            socket.emit("sendme" ,`${text.value}`);
+            console.log(text.value); 
+            mysend.innerHTML += `${text.value}  <br>`;
+            text.value = null;
+        }
+        
+        socket.on("resend", function(msg){
+            console.log(msg);
+            var yousend = document.getElementById("yousend");
+            yousend.innerHTML = `${msg}`;
+            
+        })
+    </script>
+    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
+</body>
+</html>
