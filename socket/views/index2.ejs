@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script
+      src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+      integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.js"
+      integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+      crossorigin="anonymous"
+    ></script>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .chatbox {
+        width: 400px;
+        height: 500px;
+        position: relative;
+        display: flexbox;
+        border: 1px solid red;
+        background-color: aliceblue;
+      }
+      #party {
+        width: 100%;
+        height: 5%;
+        background-color: white;
+        text-align: center;
+        border-radius: 50px;
+      }
+      .mesend {
+        text-align: end;
+      }
+      .yousend {
+        text-align: left;
+      }
+      /*
+      .class-list{
+        background-color : skyblue
+        width: 300px
+        min-height: 500px
+      }
+ 
+      .my-chat{
+        text-align: right
+      }
+      .my-chat div{
+        text-align: right
+        display:inline - block
+        background-color: yellow;
+      }
+      .other-chat{
+        text-align: left;
+        background-color: white;
+      }
+ */
+    </style>
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="chatbox">
+        <div id="party"></div>
+        <!-- <div id="yousend"></div> -->
+      </div>
+      <div>
+        <form>
+          <select name="select" id="select">
+            <option value="man1">홍길동</option>
+            <option value="man2">이박사</option>
+          </select>
+          <input type="text" name="text" id="content" />
+          <button type="button" onclick="send();">전송하기</button>
+        </form>
+      </div>
+    </div>
+    <!-- 
+      <div class="chat-list"> 
+        안녕
+      </div>
+      <div> 
+        <input type="text" name" msg id= "msg">
+        <button type="button" onclick="sendmsg">전송</button>
+      </div>
+
+      <script>
+        var socket = io.connet();
+
+        function sendmsg(){
+          1. input 밸류 가져오기
+          var msg = $("#msg").val()
+          
+          2. socket으로 클라이언트 메시지 보내기
+          socket.emit("sendmsg",msg) 
+
+          3. 
+        }
+        socket.on("send", function(msg){
+          $(".chat-list").append()
+          var mymsg = $("#msg").val();
+          var classNmae = "" ,
+          if(mymsg == msg){
+            className = "my-chat";
+          }else{
+            className = "other-chat";
+          }
+        })
+        
+      </script>
+ -->
+    <script>
+      var socket = io.connect(); // app.js에io와 연결
+      var text = document.getElementById("content");
+      let chatbox = document.querySelector(".chatbox");
+
+      //socket.emit("이벤트 명", 전송할데이터 )
+
+      // socket.emit("welcome", "안녕안녕 나는 지수야"); // 클라이언트에서 서버에게 보내기
+
+      /*  socket.on("welcome to client" , function(data){ 서버에서 보낸거 클라이언트에서 받기
+            console.log(data);
+
+            console.log(data.name);
+            console.log(data.msg)
+        })*/
+
+      socket.on("notice", function (id) {
+        console.log(id);
+        var party = document.getElementById("party");
+        if (party != "") {
+          party.innerHTML = this.id + "님이입장하셨습니다";
+        } else {
+          party.innerHTML += `${id}`;
+        }
+      });
+      function send() {
+        /*   let div = document.createElement("div");
+        div.classList.add("mesend");
+        socket.emit("sendme", `${text.value}`);
+        div.innerText = text.value;
+        console.log(text.value);
+        chatbox.append(div);
+        */
+        socket.emit("sendme", text.value);
+        text.value = null;
+      }
+      socket.on("resend", function (msg) {
+        $(".chatbox").append(`<div class="${className}"><div>${msg}</div></div>
+      </div>`);
+        var mesend = $(".mesend").value;
+        var className = "";
+        if (mesend == msg) {
+          className = "mesend";
+        } else {
+          className = "yousend";
+        }
+      });
+    </script>
+    <script
+      src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+      integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.js"
+      integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

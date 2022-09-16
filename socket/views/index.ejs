@@ -1,90 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        .content{
-            width: 400px;
-            background-color: aquamarine;
-            height: 500px;
-            position: relative;
-            display: flexbox;
-        }
-        .party{
-            width: 50%;
-            font-size: 5px;
-            height: 10%;
-            background-color: aliceblue;
-        }
-        #mesend{
-            position: relative;
-        }
-       
-
-    </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
-<body>
-<div class="content">
-    <div id="party"></div>
-    <div id="mesend"></div>
-    <div id="yousend"></div>
-</div>
-<div>
-    <form>
-        <select name="select" id="select">
-            <option value="man1">홍길동</option>
-            <option value="man2">이박사</option>
-        </select>
-        <input type="text" name="text" id="content">
-        <button type="button" onclick="send();">전송하기</button>
-    </form>
-</div>
-    
-
-
-
+    <script
+      src="https://cdn.socket.io/4.5.0/socket.io.min.js"
+      integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.6.1.min.js"
+      integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .chat-list {
+        background-color: skyblue;
+        width: 400px;
+        min-height: 500px;
+      }
+      .my-chat {
+        text-align: right;
+      }
+      .my-chat > div {
+        display: inline-block;
+        padding: 5px;
+        background-color: yellow;
+        border-radius: 10px;
+        margin: 5px;
+      }
+      .other-chat > div {
+        display: inline-block;
+        background-color: white;
+        border-radius: 10px;
+        margin: 5px;
+      }
+      .other-chat {
+        text-align: left;
+      }
+      .notice {
+        color: blue;
+        text-align: center;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="chat-list">
+      <!-- <div class="my-chat"><div>안녕</div></div>
+        <div class="other-chat"><div>안녕?</div></div> -->
+      <!-- <div class="notice">~~~~입장했습니다.</div> -->
+    </div>
+    <div>
+      <select name="location" id="selecto"></select>
+      <input type="text" name="msg" id="msg" />
+      <button type="button" onclick="sendMsg();">전송</button>
+    </div>
     <script>
-        var socket = io.connect(); // app.js에io와 연결
+      var socket = io.connect();
+      function sendMsg() {
+        // 1. input 의 value 가져옴
+        var msg = $("#msg").val();
+        socket.emit("sendMsg", msg);
+      }
+      socket.on("notice", (id) => {
+        $(".chat-list").append(
+          `<div class="notice">${id}님이 입장했습니다.</div>`
+        );
+      });
+      socket.on("send", (msg) => {
+        var myMsg = $("#msg").val();
+        var className = "";
+        if (myMsg == msg) className = "my-chat";
+        else className = "other-chat";
 
-        //socket.emit("이벤트 명", 전송할데이터 )
-        
-       // socket.emit("welcome", "안녕안녕 나는 지수야"); // 클라이언트에서 서버에게 보내기
-        
-      /*  socket.on("welcome to client" , function(data){ 서버에서 보낸거 클라이언트에서 받기
-            console.log(data);
+        $("#msg").val("");
+        $(".chat-list").append(`
+            <div class="${className}">
+                <div>${msg}</div>
+            </div>`);
+      });
+      socket.on("socket_id", function (id) {
+        $("#selecto").append(`<option>${id}</option>`);
+        console.log(id);
+      });
+      socket.on("disconnected", function (id) {
+        $(".chat-list").append(`<div class="notice">${id}가 나갔습니다</div>`);
+      });
 
-            console.log(data.name);
-            console.log(data.msg)
-        })*/
-         
-        socket.on("notice", function(id){
-          console.log(id);
-          var party = document.getElementById("party");
-          party.innerHTML += `${id}`;
+      //속닥속닥 만들기
+      // select에서 option을 소켓 아이디로 만들고,
+      // 소켓아이디를 선택한후,
+      // 그사람과 비밀(속닥속닥) 채팅이 가능하게
 
-        });
-        
-        
-        function send(){
-            var text = document.getElementById("content")
-            var mysend = document.getElementById("mesend");
-            socket.emit("sendme" ,`${text.value}`);
-            console.log(text.value); 
-            mysend.innerHTML += `${text.value}  <br>`;
-            text.value = null;
-        }
-        
-        socket.on("resend", function(msg){
-            console.log(msg);
-            var yousend = document.getElementById("yousend");
-            yousend.innerHTML = `${msg}`;
-            
-        })
+      // emit, on
     </script>
-    <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
-</body>
+  </body>
 </html>
