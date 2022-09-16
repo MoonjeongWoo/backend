@@ -37,9 +37,8 @@ io.on("connection", function (socket) {
   });
 
   socket.on("disconnect", function () {
-    if (delete client_list[socket.id]) {
-      io.emit("clientupdate", client_list);
-    }
+    delete client_list[socket.id];
+    io.emit("clientupdate", client_list);
   });
 });
 
