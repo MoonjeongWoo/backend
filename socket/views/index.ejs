@@ -36,6 +36,7 @@
         background-color: white;
         border-radius: 10px;
         margin: 5px;
+        padding: 5px;
       }
       .other-chat {
         text-align: left;
@@ -45,55 +46,82 @@
         text-align: center;
         font-size: 12px;
       }
+      .d-none {
+        display: none;
+      }
     </style>
   </head>
   <body>
-    <div class="chat-list">
-      <!-- <div class="my-chat"><div>안녕</div></div>
-        <div class="other-chat"><div>안녕?</div></div> -->
-      <!-- <div class="notice">~~~~입장했습니다.</div> -->
-    </div>
     <div>
-      <select name="location" id="selecto"></select>
-      <input type="text" name="msg" id="msg" />
-      <button type="button" onclick="sendMsg();">전송</button>
+      <input type="text" id="nickname" placeholder="이름을 입력하세요" />
+      <button type="button" onclick="entry();" id="entry_btn">입장</button>
+    </div>
+    <br />
+    <div class="d-none" id="chat">
+      <div class="chat-list">
+        <!-- <div class="my-chat"><div>안녕</div></div>
+        <div class="other-chat"><div>안녕?</div></div> -->
+        <!-- <div class="notice">~~~~입장했습니다.</div> -->
+      </div>
+      <div>
+        <!-- <select name="location" id="selecto"></select> -->
+        <input type="text" name="msg" id="msg" />
+        <button type="button" onclick="sendMsg();">전송</button>
+      </div>
     </div>
     <script>
       var socket = io.connect();
+
+      function entry() {
+        var nickname = $("#nickname").val();
+        socket.emit("setNick", nickname);
+        $("#entry_btn").attr("disabled", true);
+      }
+
       function sendMsg() {
         // 1. input 의 value 가져옴
         var msg = $("#msg").val();
         socket.emit("sendMsg", msg);
       }
-      socket.on("notice", (id) => {
-        $(".chat-list").append(
-          `<div class="notice">${id}님이 입장했습니다.</div>`
-        );
-      });
-      socket.on("send", (msg) => {
-        var myMsg = $("#msg").val();
-        var className = "";
-        if (myMsg == msg) className = "my-chat";
-        else className = "other-chat";
 
-        $("#msg").val("");
-        $(".chat-list").append(`
+      /*  socket.on("socket_id", function (id) {
+        $("#selecto").append(`<option>${id}</option>`);
+        console.log(id);
+      });*/
+
+      socket.on("entrySuccess", function () {
+        $("#chat").removeClass("d-none");
+        $("#nickname").attr("disabled", true);
+        socketEvent();
+      });
+
+      function socketEvent() {
+        socket.on("notice", (nickname) => {
+          $(".chat-list").append(
+            `<div class="notice">${nickname}님이 입장했습니다.</div>`
+          );
+        });
+        socket.on("send", (msg) => {
+          var myMsg = $("#msg").val();
+          var className = "";
+          if (myMsg == msg) className = "my-chat";
+          else className = "other-chat";
+
+          $("#msg").val("");
+          $(".chat-list").append(`
             <div class="${className}">
                 <div>${msg}</div>
             </div>`);
-      });
-      socket.on("socket_id", function (id) {
-        $("#selecto").append(`<option>${id}</option>`);
-        console.log(id);
-      });
-      socket.on("disconnected", function (id) {
-        $(".chat-list").append(`<div class="notice">${id}가 나갔습니다</div>`);
-      });
+        });
+      }
 
       //속닥속닥 만들기
       // select에서 option을 소켓 아이디로 만들고,
       // 소켓아이디를 선택한후,
       // 그사람과 비밀(속닥속닥) 채팅이 가능하게
+      socket.on("err", function (msg) {
+        alert(msg);
+      });
 
       // emit, on
     </script>
