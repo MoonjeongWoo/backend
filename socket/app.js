@@ -4,11 +4,16 @@ const http = require("http").Server(app);
 const io = require("socket.io")(http);
 const port = 8000;
 app.set("view engine", "ejs");
+app.use(express.static("./static/images"));
 app.get("/", function (req, res) {
   res.render("index");
 });
+app.get("/index2", function (req, res) {
+  res.render("index2");
+});
 
 var client_list = {};
+// client 리스트 배열
 
 io.on("connection", function (socket) {
   // io.emit("notice", socket.id);
