@@ -12,9 +12,14 @@ var client_list = {};
 
 io.on("connection", function (socket) {
   // io.emit("notice", socket.id);
-  socket.on("sendMsg", (msg) => {
+  socket.on("sendMsg", (data) => {
     // msg 받아서 전체 클라이언트한테 전송
-    io.emit("send", msg);
+    if (data.dm == "all") {
+      io.emit("send", data.msg);
+    } else {
+      io.to(data.dm).emit("send", data.msg);
+      socket.emit("send", data.msg);
+    }
   });
 
   socket.on("setNick", function (nick) {
@@ -25,9 +30,16 @@ io.on("connection", function (socket) {
       // console.log(client_list);
       io.emit("notice", nick);
       socket.emit("entrySuccess", "입장성공");
+      io.emit("clientupdate", client_list);
     }
     // 딕셔너리에서 value값만 갖고 오기
     //배열에서 원하는 값의 존재 여부 함수 => arr.indexOf()
+  });
+
+  socket.on("disconnect", function () {
+    if (delete client_list[socket.id]) {
+      io.emit("clientupdate", client_list);
+    }
   });
 });
 

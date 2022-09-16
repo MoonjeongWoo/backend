@@ -64,7 +64,9 @@
         <!-- <div class="notice">~~~~입장했습니다.</div> -->
       </div>
       <div>
-        <!-- <select name="location" id="selecto"></select> -->
+        <select id="dm">
+          <option value="all">전체에게</option>
+        </select>
         <input type="text" name="msg" id="msg" />
         <button type="button" onclick="sendMsg();">전송</button>
       </div>
@@ -81,13 +83,14 @@
       function sendMsg() {
         // 1. input 의 value 가져옴
         var msg = $("#msg").val();
-        socket.emit("sendMsg", msg);
-      }
 
-      /*  socket.on("socket_id", function (id) {
-        $("#selecto").append(`<option>${id}</option>`);
-        console.log(id);
-      });*/
+        var data = {
+          msg: msg,
+          dm: $("#dm").val(),
+        };
+
+        socket.emit("sendMsg", data);
+      }
 
       socket.on("entrySuccess", function () {
         $("#chat").removeClass("d-none");
@@ -106,12 +109,21 @@
           var className = "";
           if (myMsg == msg) className = "my-chat";
           else className = "other-chat";
-
           $("#msg").val("");
           $(".chat-list").append(`
             <div class="${className}">
                 <div>${msg}</div>
             </div>`);
+        });
+
+        socket.on("clientupdate", function (client) {
+          var option = `<option value="all">전체에게</option>`;
+          for (var key in client) {
+            if (client[key] != $("#nickname").val()) {
+              option += `<option value="${key}">${client[key]}</option>`;
+            }
+          }
+          $("#dm").html(option);
         });
       }
 
